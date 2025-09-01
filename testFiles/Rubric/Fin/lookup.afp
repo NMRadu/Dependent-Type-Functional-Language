@@ -1,0 +1,19 @@
+bind testVec0 : Vec Nat 0;
+let testVec0 = nil Nat;
+
+bind testVec1 : Vec Nat 1;
+let testVec1 = cons Nat 0 1 testVec0;
+
+bind testVec2 : Vec Nat 2;
+let testVec2 = cons Nat 1 2 testVec1;
+
+bind testVec3 : Vec Nat 3;
+let testVec3 = cons Nat 2 3 testVec2;
+
+bind fin1 : Fin 3;
+let fin1 = fsuc 2 (fzero 1);
+
+bind lookup1 : Nat;
+let lookup1 = lookup Nat 3 testVec3 fin1;
+
+lookup1

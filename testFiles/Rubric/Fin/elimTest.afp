@@ -1,0 +1,18 @@
+bind isZeroFinP : (n : Nat) -> Fin n -> U 0 ;
+let isZeroFinP n f = Bool ;
+
+bind isZeroFinZero : (m : Nat) -> Bool ;
+let isZeroFinZero m = true ;
+
+bind isZeroFinSuc : (m : Nat) -> (g : Fin m) -> Bool -> Bool ;
+let isZeroFinSuc m g rec = false ;
+
+bind isZeroFin : (n : Nat) -> Fin n -> Bool ;
+let isZeroFin n f =
+  elimFin
+    isZeroFinP
+    isZeroFinZero
+    isZeroFinSuc
+    n f ;
+
+isZeroFin (suc (suc zero)) (fzero (suc zero))

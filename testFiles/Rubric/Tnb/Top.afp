@@ -1,0 +1,4 @@
+bind topExample : Top;
+let topExample = tt;
+
+topExample

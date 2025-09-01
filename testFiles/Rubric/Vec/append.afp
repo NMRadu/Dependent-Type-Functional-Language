@@ -1,0 +1,4 @@
+bind test:((Vec Nat) (suc (suc (suc zero))));
+let test = append Nat (suc (suc zero)) (suc zero) (cons Nat (suc zero) 1 (cons Nat zero 2 (nil Nat))) (cons Nat zero 3 (nil Nat));
+
+test

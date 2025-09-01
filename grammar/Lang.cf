@@ -1,0 +1,64 @@
+-- A program is defined as a (possibly empty) list of statements separated by semicolons,
+-- followed by an expression which will be evaluated to produce an output.
+
+entrypoints Program;
+
+-- LISTS --------------------------------------------------------------
+[].    [Stmt] ::= ;
+(:).   [Stmt] ::= Stmt ";" [Stmt] ;
+
+[].     [Ident] ::= ;
+(:).    [Ident] ::= Ident [Ident] ;
+
+Program. Program ::= [Stmt] Exp ;
+[].          [Branch] ::= ;
+(:[]).       [Branch] ::= Branch ;
+(:).         [Branch] ::= Branch "," [Branch] ;
+
+[]. [Const] ::= ;
+(:[]). [Const] ::= Const ;
+(:). [Const] ::= Const "," [Const] ;
+
+[]. [ArgBind] ::= ;
+(:). [ArgBind] ::= ArgBind [ArgBind] ;
+
+-- STATEMENTS ---------------------------------------------------------
+
+SLet. Stmt ::= "let" Ident [Ident] "=" Exp ;
+SBind. Stmt ::= "bind" Ident ":" Exp ; 
+SInductive. Stmt ::= "data" Ident ":" [ArgBind] ":" Exp "where" [Const] "end" ;
+SInductiveSimple. Stmt ::= "data" Ident ":" Exp "where" [Const] "end" ;
+
+
+-- CONSTRUCTOR --------------------------------------------------------
+
+Const. Const ::= Ident ":" Exp ;
+ArgBind. ArgBind ::= "(" Ident ":" Exp ")" ;
+
+-- Branch -- 
+Branch. Branch ::= Exp "=>" Exp ;
+
+-- EXPRESSIONS --------------------------------------------------------
+
+-- (1) Exp4: ATOMS (highest precedence)
+EType.   Exp4 ::= "U" Integer ;
+EVar.    Exp4 ::= Ident ;
+ENat.    Exp4 ::= Integer ;
+_.       Exp4 ::= "(" Exp ")" ;
+
+-- (2) Exp3: APPLICATION (left‐associative)
+EApp.    Exp3 ::= Exp3 Exp4 ;
+_.       Exp3 ::= Exp4 ;
+
+-- (3) Exp2: LAMBDA (right‐associative)
+ELam.    Exp2 ::= "\\" [Ident] "->" Exp2 ;
+_.       Exp2 ::= Exp3 ;
+
+-- (4) Exp1: PI‐TYPES and “→” (right‐associative, lowest of all operators)
+EPiSimple.  Exp1 ::= Exp2 "->" Exp1 ;
+EPi.        Exp1 ::= "(" Ident ":" Exp ")" "->" Exp1 ;
+EMatch.     Exp1 ::= "case" Exp "of" [Branch] "end" ;
+_.          Exp1 ::= Exp2 ;
+
+-- (5) Top level: pass everything down to Exp1
+_. Exp ::= Exp1 ;

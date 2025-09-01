@@ -1,0 +1,7 @@
+bind constructPair : (A : U 0) -> (B : U 0) -> A -> B -> Pair A B ;
+let constructPair A B a b = pair A B a b ;
+
+bind test: Pair Nat Bool ;
+let test = constructPair Nat Bool zero false ;
+
+swap Nat Bool test

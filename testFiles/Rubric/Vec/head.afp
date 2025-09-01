@@ -1,0 +1,7 @@
+bind exampleVec : Vec Nat 2;
+let exampleVec = cons Nat 1 2 (cons Nat 0 1 (empty Nat)) ;
+
+bind testHead : Nat ;
+let testHead = head Nat 2 exampleVec ;
+
+testHead

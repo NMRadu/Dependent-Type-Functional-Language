@@ -1,0 +1,13 @@
+bind isZeroHelper : Nat -> U 0 ;
+let isZeroHelper n = case n of
+  zero  => Bool,
+  suc m => Bool
+end ;
+
+bind isZeroStep : (m : Nat) -> Bool -> Bool ;
+let isZeroStep m prev = false ;
+
+bind isZero : Nat -> Bool ;
+let isZero n = elimNat isZeroHelper true isZeroStep n ;
+
+isZero zero

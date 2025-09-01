@@ -1,0 +1,4 @@
+bind lookupZeroImpossible : (A : U 0) -> Fin zero -> A;
+let lookupZeroImpossible A fin0 = magic A (case fin0 of end) ;
+
+lookupZeroImpossible

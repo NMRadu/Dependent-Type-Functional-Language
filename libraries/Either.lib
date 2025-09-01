@@ -1,0 +1,13 @@
+data Either : U 0 -> U 0 -> U 0 where
+  left  : (A : U 0) -> (B : U 0) -> A -> Either A B ,
+  right : (A : U 0) -> (B : U 0) -> B -> Either A B ,
+end ;
+
+bind elimEither: (A : U 0) -> (B : U 0) -> (P : Either A B -> U 0) -> ((x : A) -> P (left A B x)) -> ((y : B) -> P (right A B y)) -> (z : Either A B) -> P z ;
+let elimEither A B P pl pr z =
+  case z of
+    left  A1 B1 x => pl x,
+    right A2 B2 y => pr y
+  end ;
+
+Either

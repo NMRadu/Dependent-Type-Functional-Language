@@ -1,0 +1,19 @@
+data Nat : U 0 where
+    zero : Nat ,
+    suc : Nat -> Nat,
+end ;
+
+bind plus : Nat -> Nat -> Nat ;
+let plus x y = case x of
+  zero    => y,
+  suc m   => suc (plus m y)
+end ;
+
+bind elimNat: (P : Nat -> U 0) -> P zero -> ((m : Nat) -> P m -> P (suc m)) -> (n : Nat) -> P n;
+let elimNat P pz ps n = case n of
+  zero    => pz,
+  suc m   => ps m (elimNat P pz ps m)
+end ;
+
+
+Nat

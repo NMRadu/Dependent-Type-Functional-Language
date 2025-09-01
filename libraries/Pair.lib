@@ -1,0 +1,18 @@
+data Pair : U 0 -> U 0 -> U 0 where
+  pair : (A : U 0) -> (B : U 0) -> A -> B -> Pair A B,
+end ;
+
+bind fst : (A : U 0) -> (B : U 0) -> Pair A B -> A ;
+let fst A B p = case p of
+  pair A2 B2 a b => a
+end ;
+
+bind snd : (A : U 0) -> (B : U 0) -> Pair A B -> B ;
+let snd A B p = case p of
+  pair A2 B2 a b => b
+end ;
+
+bind swap : (A : U 0) -> (B : U 0) -> Pair A B -> Pair B A ;
+let swap A B p = pair B A (snd A B p) (fst A B p) ;
+
+Pair

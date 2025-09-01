@@ -1,0 +1,23 @@
+bind appendElimP : (A : U 0) -> (m : Nat) -> (k : Nat) -> Vec A k -> U 0 ;
+let appendElimP A m k xs = Vec A (plus k m) ;
+
+bind appendElimNil : (A : U 0) -> (m : Nat) -> (ys : Vec A m) -> Vec A (plus zero m) ;
+let appendElimNil A m ys = ys ;
+
+bind appendElimCons :
+  (A : U 0) -> (m : Nat) -> (ys : Vec A m) ->
+  (k : Nat) -> (x : A) -> (xs : Vec A k) -> Vec A (plus k m) -> Vec A (plus (suc k) m) ;
+let appendElimCons A m ys k x xs rec = cons A (plus k m) x rec ;
+
+bind appendElim : (A : U 0) -> (n : Nat) -> (m : Nat) -> Vec A n -> Vec A m -> Vec A (plus n m) ;
+let appendElim A n m xs ys =
+  elimVec A
+    (appendElimP A m ys)
+    (appendElimNil A m ys)
+    (appendElimCons A m ys)
+    n xs ;
+
+bind test:((Vec Nat) (suc (suc (suc zero))));
+let test = appendElim Nat (suc (suc zero)) (suc zero) (cons Nat (suc zero) 1 (cons Nat zero 2 (nil Nat))) (cons Nat zero 3 (nil Nat));
+
+test

@@ -1,0 +1,4 @@
+bind reflZero : Id Nat zero zero ;
+let reflZero = refl Nat zero ;
+
+reflZero

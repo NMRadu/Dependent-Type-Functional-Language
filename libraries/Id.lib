@@ -1,0 +1,34 @@
+data Id : (A : U 0) -> (x : A) -> (y : A) -> U 0 where
+  refl : (A : U 0) -> (x : A) -> Id A x x,
+end ;
+
+bind J : (A : U 0) -> (x : A) -> (P : (y : A) -> Id A x y -> U 0) -> (p0 : P x (refl A x)) -> (y : A) -> (q : Id A x y) -> P y q;
+let J A x P p0 y q = case q of
+  refl A1 x1 => p0
+end;
+
+bind SymP : (A : U 0) -> (x : A) -> (y : A) -> Id A x y -> U 0 ;
+let SymP A x y p = Id A y x;
+
+bind sym : (A : U 0) -> (x : A) -> (y : A) -> Id A x y -> Id A y x ;
+let sym A x y p = J A x (SymP A x) (refl A x) y p;
+
+bind TransP : (A : U 0) -> (x : A) -> (k : A) -> Id A x k -> U 0 ;
+let TransP A x k p = Id A x k;
+
+bind trans : (A : U 0) -> (x : A) -> (y : A) -> (z : A) -> Id A x y -> Id A y z -> Id A x z ;
+let trans A x y z p r = J A x (TransP A x) p z r;
+
+bind CongP : (A : U 0) -> (B : U 0) -> (f : A -> B) -> (x : A) -> (a : A) -> Id A x a -> U 0 ;
+let CongP A B f x a p = Id B (f x) (f a);
+
+bind cong : (A : U 0) -> (B : U 0) -> (f : A -> B) -> (x : A) -> (y : A) -> Id A x y -> Id B (f x) (f y) ;
+let cong A B f x y p = J A x (CongP A B f x) (refl B (f x)) y p;
+
+bind SubstP : (A : U 0) -> (P : A -> U 0) -> (x : A) -> (y : A) -> Id A x y -> U 0 ;
+let SubstP A P x y p = P y;
+
+bind subst : (A : U 0) -> (P : A -> U 0) -> (x : A) -> P x -> (y : A) -> Id A x y -> P y ;
+let subst A P x px y q = J A x (SubstP A P x) px y q ;
+
+Id

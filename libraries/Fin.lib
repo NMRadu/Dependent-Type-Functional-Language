@@ -1,0 +1,25 @@
+data Fin : Nat -> U 0 where
+  fzero : (m : Nat) -> Fin (suc m),
+  fsuc  : (m : Nat) -> Fin m -> Fin (suc m),
+end ;
+
+bind lookup : (A : U 0) -> (n : Nat) -> Vec A n -> Fin n -> A;
+let lookup A n xs i = case xs of
+  cons A m x xs' => case i of
+    fzero m'     => x,
+    fsuc m' j    => lookup A m xs' j
+  end
+end ;
+
+bind elimFin
+  : (P : (n : Nat) -> Fin n -> U 0)
+  -> ((m : Nat) -> P (suc m) (fzero m))
+  -> ((m : Nat) -> (g : Fin m) -> P m g -> P (suc m) (fsuc m g))
+  -> (n : Nat) -> (f : Fin n) -> P n f;
+let elimFin P pzero psuc n f = case f of
+  fzero m     => pzero m,
+  fsuc m g    => psuc m g (elimFin P pzero psuc m g)
+end ;
+
+
+Fin

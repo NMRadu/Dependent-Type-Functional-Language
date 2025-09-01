@@ -1,0 +1,7 @@
+bind reflZero : Id Nat zero zero ;
+let reflZero = refl Nat zero ;
+
+bind testSym : Id Nat zero zero ;
+let testSym = sym Nat zero zero reflZero ;
+
+testSym

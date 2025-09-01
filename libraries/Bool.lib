@@ -1,0 +1,14 @@
+data Bool : U 0 where
+    true : Bool ,
+    false : Bool,
+end ;
+
+bind elimBool : (P : Bool -> U 0) -> P true 
+            -> P false -> (b : Bool) -> P b ;
+let elimBool P pt pf b = case b of
+  true => pt,
+  false => pf
+end ;
+
+Bool
+

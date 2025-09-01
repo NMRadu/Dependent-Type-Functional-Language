@@ -1,0 +1,13 @@
+bind reflZero : Id Nat zero zero ;
+let reflZero = refl Nat zero ;
+
+bind PHelper : Nat -> U 0 ;
+let PHelper n = Nat ;
+
+bind pxZero : PHelper zero ;
+let pxZero = zero ;
+
+bind testSubst : PHelper zero ;
+let testSubst = subst Nat PHelper zero pxZero zero reflZero ;
+
+testSubst

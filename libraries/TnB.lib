@@ -1,0 +1,11 @@
+data Top : U 0 where
+  tt : Top,
+end ;
+
+data Bot : U 0 where
+end ;
+
+bind magic : (A : U 0) -> Bot -> A;
+let magic A x = case x of end ;
+
+Tnb

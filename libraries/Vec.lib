@@ -1,0 +1,36 @@
+data Vec : (A : U 0) : Nat -> U 0 where
+  nil  : Vec A zero ,
+  cons : (n : Nat) -> A -> Vec A n -> Vec A (suc n) ,
+end ;
+
+bind empty : (A : U 0) -> Vec A zero ;
+let empty A = nil A ;
+
+bind singleton : (A : U 0) -> A -> Vec A (suc zero) ;
+let singleton A x = cons A zero x (nil A) ;
+
+bind head : (A : U 0) -> (n : Nat) -> Vec A (suc n) -> A ;
+let head A n v = case v of
+  cons A n1 x xs => x
+end ;
+
+bind tail : (A : U 0) -> (n : Nat) -> Vec A (suc n) -> Vec A n ;
+let tail A n v = case v of
+  cons A n1 x xs => xs
+end ;
+
+bind append : (A : U 0) -> (n : Nat) -> (m : Nat) -> Vec A n -> Vec A m -> Vec A (plus n m) ;
+let append A n m xs ys = case n of
+  zero => ys,
+  suc n1 => case xs of
+    cons A nTail x xsTail => cons A (plus n1 m) x (append A n1 m xsTail ys)
+  end
+end ;
+
+bind elimVec : (A : U 0) -> (P : (n : Nat) -> Vec A n -> U 0) -> P zero (nil A) -> ((m : Nat) -> (x : A) -> (xs : Vec A m) -> P m xs -> P (suc m) (cons A m x xs)) -> (n : Nat) -> (xs : Vec A n) -> P n xs;
+let elimVec A P pnil pcons n xs = case xs of
+  nil  A       => pnil,
+  cons A m x xs' => pcons m x xs' (elimVec A P pnil pcons m xs')
+end ;
+
+Vec

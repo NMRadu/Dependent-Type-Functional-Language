@@ -1,0 +1,96 @@
+cabal-version:      3.0
+
+name:               Lang
+version:            0.1.0.0
+
+-- all the commong configurations
+common shared
+    build-depends:    base >=4.17 && < 4.22
+                    , array
+                    , containers
+
+    default-language: GHC2021
+
+-- the BNFC-generated library containing the grammar
+library grammar
+    import:           shared
+
+    hs-source-dirs:   grammar
+    exposed-modules:  Lang.Abs
+                    , Lang.ErrM
+                    , Lang.Lex
+                    , Lang.Par
+                    , Lang.Print
+
+
+-- the main library containing the language implementation
+library lang
+    import:           shared
+
+    hs-source-dirs:   src
+
+    exposed-modules:  Run
+                    , App
+                    , Logger
+                    , TypeCheck.Expr
+                    , TypeCheck.Stmt
+                    , TypeCheck.Program
+                    , TypeCheck.Context
+                    , IR.IrGen
+                    , IR.SimplePiConvertor
+                    , IR.FunctionDesugar
+                    , IR.LambdaDesugar
+                    , IR.BruijnConvertor
+                    , IR.InductiveDesugar
+                    , IR.NatDesugar
+                    , IR.PlatedExp
+
+    build-depends:    mtl ^>=2.3.1
+                    , lens >=4.19
+                    , grammar
+                    , containers
+
+-- the main executable which lets you run the interpreter
+executable main
+    import:           shared
+
+    hs-source-dirs:   app
+    main-is:          Main.hs
+
+    build-depends:    async ^>=2.2.5
+                    , grammar
+                    , lang
+
+-- the test suite
+test-suite test
+    import:           shared
+
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Main.hs
+
+    other-modules:
+        BoolElimFalse
+        , BoolElimTrue
+        , EitherElimLeft
+        , EitherElimRight
+        , FinLookup
+        , FinElimTest
+        , IdRefl
+        , IdSubst
+        , IdSym
+        , IdTrans
+        , NatElimNotZero
+        , NatElimZero
+        , PairSwap
+        , TnBBot
+        , TnBTop
+        , VecAppend
+        , VecHeadTest
+        , VecTailTest
+        , VecElimTest
+
+    build-depends:    grammar
+                    , lang
+                    , hspec
+                    , QuickCheck

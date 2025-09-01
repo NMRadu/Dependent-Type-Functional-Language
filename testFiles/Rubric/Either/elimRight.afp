@@ -1,0 +1,19 @@
+bind eitherToBoolP : Either Nat Bool -> U 0 ;
+let eitherToBoolP e = case e of
+  left  A B x => Bool,
+  right A B y => Bool
+end ;
+
+bind leftToTrue : Nat -> Bool ;
+let leftToTrue n = true ;
+
+bind rightToFalse : Bool -> Bool ;
+let rightToFalse b = false ;
+
+bind testEither : Either Nat Bool -> Bool ;
+let testEither e = elimEither Nat Bool eitherToBoolP leftToTrue rightToFalse e;
+
+bind rightExample : Either Nat Bool ;
+let rightExample = right Nat Bool true ;
+
+testEither rightExample

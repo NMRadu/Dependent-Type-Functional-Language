@@ -1,0 +1,10 @@
+bind natOrBoolHelper : Bool -> U 0 ;
+let natOrBoolHelper b = case b of
+    true => Nat ,
+    false => Bool
+end ;
+
+bind natOrBool : (b : Bool) -> natOrBoolHelper b ;
+let natOrBool b = elimBool natOrBoolHelper  zero  true  b;
+
+natOrBool false

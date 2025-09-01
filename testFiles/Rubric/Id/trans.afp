@@ -1,0 +1,7 @@
+bind reflZero : Id Nat zero zero ;
+let reflZero = refl Nat zero ;
+
+bind testTrans : Id Nat zero zero ;
+let testTrans = trans Nat zero zero zero reflZero reflZero ;
+
+testTrans
